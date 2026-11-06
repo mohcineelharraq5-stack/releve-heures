@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827"><title>Relevé — Heures Effectives</title>
+<style>
+:root{--bg:#f3f5f9;--panel:#fff;--text:#172033;--muted:#778197;--line:#e4e8f0;--accent:#6558f5;--accent2:#5145d8;--good:#16845b;--bad:#c34b54;--shadow:0 12px 35px #26345b0b}
+[data-theme=dark]{--bg:#0d1220;--panel:#151c2d;--text:#eef2ff;--muted:#9ca8c0;--line:#29334a;--accent:#9288ff;--accent2:#776af3;--good:#42d6a0;--bad:#ff7e87;--shadow:0 12px 35px #0003}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;transition:background .2s,color .2s}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:10px 14px;font-weight:650}.primary{background:var(--accent);color:white}.primary:hover{background:var(--accent2)}.secondary{background:var(--bg);color:var(--text);border:1px solid var(--line)}.danger{color:var(--bad);background:transparent;border:1px solid var(--line)}.small{padding:7px 10px;font-size:13px}
+.app{display:none;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:244px;padding:26px 17px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:25px;z-index:5}.brand{display:flex;align-items:center;gap:11px;padding:0 8px;font-weight:800;font-size:16px}.logo{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--accent),#9c70ff);color:white;font-size:20px}.brand small{display:block;color:var(--muted);font-size:11px;font-weight:600}.nav{display:grid;gap:7px}.nav button{background:transparent;text-align:left;color:var(--muted);display:flex;gap:12px;align-items:center}.nav button.active,.nav button:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}.sidebar-bottom{margin-top:auto;color:var(--muted);font-size:12px;padding:8px}
+.main{margin-left:244px;padding:30px clamp(18px,3vw,44px);max-width:1600px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:27px}.eyebrow{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-weight:750}.topbar h1{font-size:clamp(24px,3vw,32px);letter-spacing:-.04em;margin:4px 0}.top-actions{display:flex;gap:9px;align-items:center}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}.metric-label{font-size:13px;color:var(--muted);font-weight:600}.metric{font-size:clamp(23px,2.5vw,31px);font-weight:800;letter-spacing:-.04em;margin:10px 0 5px}.metric-note{font-size:12px;color:var(--muted)}.metric-icon{float:right;width:37px;height:37px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent);font-size:18px}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:18px;margin-bottom:20px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.panel h2{font-size:17px;margin:0;letter-spacing:-.02em}.sub{font-size:12px;color:var(--muted);margin-top:4px}.bar-chart{height:190px;display:flex;align-items:end;gap:clamp(5px,1.3vw,14px);padding:15px 4px 0;border-bottom:1px solid var(--line)}.bar-wrap{flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;height:100%;gap:9px;min-width:0}.bar{width:min(32px,80%);min-height:3px;border-radius:7px 7px 2px 2px;background:linear-gradient(180deg,var(--accent),#9a8fff);transition:height .3s}.bar-label{font-size:11px;color:var(--muted)}.bar-value{font-size:10px;color:var(--muted)}
+.progress-row{margin:19px 0}.progress-meta{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.track{height:8px;border-radius:99px;background:var(--bg);overflow:hidden}.fill{height:100%;background:var(--accent);border-radius:99px}.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick{padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg);text-align:left;color:var(--text)}.quick span{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}.quick b{font-size:14px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:20px 0 14px}.filters{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea,.filters input,.filters select,.login-card input{width:100%;min-width:0;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 11px;outline:none}.field input:focus,.field select:focus,.filters input:focus,.filters select:focus{border-color:var(--accent)}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}table{border-collapse:collapse;width:100%;min-width:760px;background:var(--panel)}th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);font-size:13px;white-space:nowrap}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;background:color-mix(in srgb,var(--bg) 65%,var(--panel))}tr:last-child td{border-bottom:0}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:color-mix(in srgb,var(--good) 13%,transparent);color:var(--good);font-size:11px;font-weight:750}.pill.extra{background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--accent)}.empty{text-align:center;padding:38px 15px;color:var(--muted)}
+.page{display:none}.page.active{display:block}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.form-grid .wide{grid-column:1/-1}.form-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:18px}.section-title{margin:0 0 15px;font-size:18px}.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.note{font-size:12px;color:var(--muted);line-height:1.7}.toast{position:fixed;right:22px;bottom:22px;z-index:20;background:var(--text);color:var(--panel);padding:12px 17px;border-radius:12px;box-shadow:var(--shadow);display:none;max-width:calc(100vw - 44px)}.modal-backdrop{display:none;position:fixed;inset:0;background:#080b17a8;z-index:10;align-items:center;justify-content:center;padding:18px}.modal-backdrop.show{display:flex}.modal{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.modal-head h2{margin:0}.login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at top left,color-mix(in srgb,#7164ff 20%,var(--bg)),var(--bg) 55%)}.login-card{width:min(420px,100%);background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:var(--shadow)}.login-card h1{font-size:25px;letter-spacing:-.04em;margin:18px 0 5px}.login-card p{color:var(--muted);font-size:13px;margin-bottom:22px}.login-card input{margin-bottom:12px}.login-card button{width:100%}.error{color:var(--bad);font-size:12px;margin-top:10px}.mobile-menu{display:none}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}.main{padding:24px}.sidebar{width:210px}.main{margin-left:210px}}
+@media(max-width:700px){.sidebar{inset:auto 0 0;width:auto;height:67px;padding:6px 7px;border-right:0;border-top:1px solid var(--line);flex-direction:row;gap:0;justify-content:space-around}.brand,.sidebar-bottom{display:none}.nav{width:100%;display:flex;justify-content:space-around;gap:2px}.nav button{flex:1;justify-content:center;flex-direction:column;gap:2px;padding:6px 2px;font-size:10px;border-radius:99px}.nav button .nav-label{font-size:10px}.main{margin-left:0;padding:20px 14px 88px}.topbar{align-items:flex-start;margin-bottom:19px}.topbar h1{font-size:24px}.top-actions{gap:6px}.top-actions button{padding:8px 10px;font-size:12px}.cards{gap:10px}.card{padding:15px}.metric{font-size:24px}.metric-icon{width:30px;height:30px}.panel{padding:16px}.form-grid,.settings-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.bar-chart{height:160px}.toolbar{align-items:stretch}.filters{width:100%}.filters>*{flex:1;min-width:120px}.toolbar>.primary{width:100%}}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="logo">◷</div>
+    <h1>Bon retour.</h1><p>Connectez-vous à votre espace personnel de suivi des heures.</p>
+    <form id="loginForm"><input id="passwordInput" type="password" autocomplete="current-password" placeholder="Mot de passe" required><button class="primary" type="submit">Accéder à mon espace →</button><div id="loginError" class="error"></div></form>
+    <div class="note" style="margin-top:18px">Vos relevés sont enregistrés sur le serveur de votre application.</div>
+  </div>
+</div>
+<div id="app" class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">◷</div><div>HEURES<span style="color:var(--accent)">+</span><small>RELEVÉ PERSONNEL</small></div></div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard"><span>◫</span><span class="nav-label">Dashboard</span></button>
+    <button data-page="records"><span>▤</span><span class="nav-label">Mes relevés</span></button>
+    <button data-page="settings"><span>⚙</span><span class="nav-label">Paramètres</span></button>
+  </nav>
+  <div class="sidebar-bottom">Personnel · Privé<br>Heures+ v1.0</div>
+</aside>
+<main class="main">
+  <header class="topbar"><div><div class="eyebrow" id="todayLabel">ESPACE PERSONNEL</div><h1 id="pageTitle">Vue d'ensemble</h1><div class="sub">Votre temps de travail, en toute clarté.</div></div><div class="top-actions"><button id="themeBtn" class="secondary" title="Changer de thème">☾</button><button id="logoutBtn" class="secondary">Quitter</button></div></header>
+  <section id="page-dashboard" class="page active">
+    <div class="toolbar" style="margin-top:0">
+      <div class="filters">
+        <select id="periodType" aria-label="Type de période">
+          <option value="month">Mois civil</option>
+          <option value="company">Période entreprise (27 -> 26)</option>
+          <option value="custom">Période personnalisée</option>
+        </select>
+        <span id="monthYearGroup">
+          <select id="monthFilter" aria-label="Mois"></select>
+          <select id="yearFilter" aria-label="Année"></select>
+        </span>
+        <span id="customDateGroup" style="display:none; gap:6px; align-items:center;">
+          <input type="date" id="startDateFilter" aria-label="Date début">
+          <span style="font-size:12px; color:var(--muted)">à</span>
+          <input type="date" id="endDateFilter" aria-label="Date fin">
+        </span>
+      </div>
+      <button class="primary" id="addBtn">＋ Ajouter une journée</button>
+    </div>
+    <div class="cards">
+      <div class="card"><span class="metric-icon">◷</span><div class="metric-label">Heures effectives</div><div class="metric" id="totalHours">0 h</div><div class="metric-note" id="daysNote">0 journée enregistrée</div></div>
+      <div class="card"><span class="metric-icon">↗</span><div class="metric-label">Heures supplémentaires</div><div class="metric" id="extraHours">0 h</div><div class="metric-note">Au-delà du seuil journalier configuré</div></div>
+      <div class="card"><span class="metric-icon">◇</span><div class="metric-label">Salaire estimé</div><div class="metric" id="salary">0 DH</div><div class="metric-note">Estimation basée sur les heures et le taux horaire</div></div>
+      <div class="card"><span class="metric-icon">▣</span><div class="metric-label">Jours enregistrés</div><div class="metric" id="daysCount">0</div><div class="metric-note" id="avgHours">Moyenne : 0 h/jour</div></div>
+    </div>
+    <div class="content-grid">
+      <div class="panel"><div class="panel-head"><div><h2>Activité hebdomadaire</h2><div class="sub">Heures effectives par semaine de la période sélectionnée</div></div></div><div class="bar-chart" id="chart"></div></div>
+      <div class="panel"><div class="panel-head"><div><h2>Résumé du mois / de la période</h2><div class="sub">Vos indicateurs de suivi</div></div></div>
+        <div class="progress-row"><div class="progress-meta"><span>Heures effectives</span><b id="hoursProgressText">0 h</b></div><div class="track"><div class="fill" id="hoursProgress" style="width:0%"></div></div></div>
+        <div class="progress-row"><div class="progress-meta"><span>Présence enregistrée</span><b id="presenceText">0 jour(s)</b></div><div class="track"><div class="fill" id="presenceProgress" style="width:0%"></div></div></div>
+        <div class="quick-grid"><button class="quick" id="quickRecords"><span>Consulter</span><b>Mes relevés →</b></button><button class="quick" id="quickSettings"><span>Personnaliser</span><b>Mes paramètres →</b></button></div>
+      </div>
+    </div>
+    <div class="panel"><div class="panel-head"><div><h2>Dernières journées</h2><div class="sub">Les entrées les plus récentes de la période</div></div><button class="secondary small" id="allRecords">Tout afficher →</button></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Horaire</th><th>Pause</th><th>Effectif</th><th>Supplémentaire</th><th>Type</th></tr></thead><tbody id="recentTable"></tbody></table></div></div>
+  </section>
+  <section id="page-records" class="page">
+    <div class="toolbar"><div class="filters"><input id="searchDate" type="month" aria-label="Filtrer par mois"><select id="typeFilter"><option value="">Tous les types</option><option>Normal</option><option>Dimanche</option><option>Jour férié</option><option>Absence</option><option>Congé</option></select></div><button class="primary" id="addBtn2">＋ Ajouter une journée</button></div>
+    <div class="panel"><div class="panel-head"><div><h2>Historique des heures</h2><div class="sub" id="recordCount">0 entrée</div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary small" id="exportCsv">Exporter CSV</button><button class="secondary small" id="exportJson">Sauvegarde JSON</button><button class="secondary small" id="importBtn">Importer JSON</button><input type="file" id="importFile" accept=".json,application/json" hidden></div></div><div class="table-wrap"><table><thead><tr><th>Date</th><th>Début</th><th>Fin</th><th>Pause</th><th>Heures effectives</th><th>Supplémentaires</th><th>Type</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="recordsTable"></tbody></table></div></div>
+  </section>
+  <section id="page-settings" class="page">
+    <div class="settings-grid">
+      <div class="panel"><h2 class="section-title">Paramètres de calcul</h2><div class="field" style="margin-bottom:14px"><label for="hourlyRate">Taux horaire (DH)</label><input id="hourlyRate" type="number" min="0" step=".01" value="23"></div><div class="field" style="margin-bottom:14px"><label for="normalHours">Heures normales par journée</label><input id="normalHours" type="number" min="1" max="24" step=".5" value="8"></div><div class="field" style="margin-bottom:14px"><label for="sundayMultiplier">Coefficient dimanche</label><input id="sundayMultiplier" type="number" min="1" max="5" step=".25" value="2"></div><div class="field" style="margin-bottom:14px"><label for="holidayMultiplier">Coefficient jour férié</label><input id="holidayMultiplier" type="number" min="1" max="5" step=".25" value="2"></div><button id="saveSettings" class="primary">Enregistrer les paramètres</button><p class="note">Les coefficients et la méthode de calcul sont personnalisables. Le résultat est une estimation personnelle, pas un bulletin de paie officiel.</p></div>
+      <div class="panel"><h2 class="section-title">Données et confidentialité</h2><p class="note">Cette application est conçue pour un usage personnel. Les relevés sont conservés dans le fichier de données du serveur configuré par l'hébergeur. Téléchargez régulièrement une sauvegarde JSON pour éviter toute perte de données.</p><div style="display:grid;gap:10px;margin-top:18px"><button class="secondary" id="settingsExport">Télécharger une sauvegarde</button><button class="secondary" id="settingsImport">Restaurer une sauvegarde JSON</button><button class="danger" id="clearRecords">Supprimer tous les relevés…</button></div><p class="note" style="margin-top:18px">Astuce : pour utiliser le même compte sur PC et téléphone, ouvrez la même adresse web et connectez-vous avec le même mot de passe.</p></div>
+    </div>
+  </section>
+</main>
+</div>
+<div id="modalBackdrop" class="modal-backdrop"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Ajouter une journée</h2><button class="secondary small" id="closeModal">✕</button></div>
+<form id="recordForm"><input id="recordId" type="hidden"><div class="form-grid">
+<div class="field"><label for="date">Date *</label><input id="date" type="date" required></div>
+<div class="field"><label for="start">Heure de début *</label><input id="start" type="time" value="08:00" required></div>
+<div class="field"><label for="end">Heure de fin *</label><input id="end" type="time" value="16:00" required></div>
+<div class="field"><label for="breakMins">Pause (minutes)</label><input id="breakMins" type="number" min="0" max="600" value="0" required></div>
+<div class="field"><label for="recordType">Type de journée</label><select id="recordType"><option>Normal</option><option>Dimanche</option><option>Jour férié</option><option>Absence</option><option>Congé</option></select></div>
+<div class="field"><label for="bonus">Prime / indemnité (DH)</label><input id="bonus" type="number" min="0" step=".01" value="0"></div>
+<div class="field wide"><label for="notes">Notes / observations</label><textarea id="notes" rows="2" placeholder="Ex. : shift de 12 h, arrêt, remarque…"></textarea></div>
+</div><div id="calcPreview" class="note" style="margin-top:14px"></div><div class="form-actions"><button type="button" class="secondary" id="cancelModal">Annuler</button><button type="submit" class="primary">Enregistrer la journée</button></div></form>
+</div></div><div id="toast" class="toast"></div>
+<script>
+const $=id=>document.getElementById(id);
+const MONTHS=["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+let token="", db={records:[],settings:{hourlyRate:23}}, settings={normalHours:8,sundayMultiplier:2,holidayMultiplier:2}, editing=false, toastTimer;
+const today=new Date(); const localDate=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function showToast(msg){$("toast").textContent=msg;$("toast").style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>$("toast").style.display="none",2800)}
+function escapeHtml(s=""){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function num(v){return Number(v)||0}
+function mins(t){if(!t)return 0;let [h,m]=t.split(":").map(Number);return h*60+m}
+function calc(r){if(["Absence","Congé"].includes(r.type))return 0;let end=mins(r.end),start=mins(r.start);if(end<start)end+=1440;return Math.max(0,(end-start-num(r.breakMins))/60)}
+function extra(r){return Math.max(0,calc(r)-num(settings.normalHours))}
+function money(n){return new Intl.NumberFormat("fr-MA",{style:"currency",currency:"MAD",maximumFractionDigits:2}).format(n).replace("MAD","DH")}
+function dateFmt(s){if(!s)return "—";let [y,m,d]=s.split("-");return `${d}/${m}/${y}`}
+function sorted(a){return [...a].sort((x,y)=>y.date.localeCompare(x.date))}
+
+function getFilterRange(){
+  let pType = $("periodType").value;
+  if (pType === "custom") {
+    let s = $("startDateFilter").value, e = $("endDateFilter").value;
+    return { start: s || "0000-00-00", end: e || "9999-99-99" };
+  } else if (pType === "company") {
+    let m = Number($("monthFilter").value); // 0-11
+    let y = Number($("yearFilter").value);
+    // Période entreprise : Du 27 du mois précédent au 26 du mois sélectionné
+    let prevM = m - 1, prevY = y;
+    if (prevM < 0) { prevM = 11; prevY = y - 1; }
+    let start = `${prevY}-${String(prevM + 1).padStart(2,"0")}-27`;
+    let end = `${y}-${String(m + 1).padStart(2,"0")}-26`;
+    return { start, end };
+  } else {
+    // Mois civil classique (Du 01 au dernier jour du mois)
+    let m = Number($("monthFilter").value);
+    let y = Number($("yearFilter").value);
+    let start = `${y}-${String(m + 1).padStart(2,"0")}-01`;
+    let lastDay = new Date(y, m + 1, 0).getDate();
+    let end = `${y}-${String(m + 1).padStart(2,"0")}-${String(lastDay).padStart(2,"0")}`;
+    return { start, end };
+  }
+}
+
+function selectedRecords(){
+  let range = getFilterRange();
+  return db.records.filter(r => r.date >= range.start && r.date <= range.end);
+}
+
+async function api(path,opts={}){let res=await fetch(path,{...opts,headers:{"Content-Type":"application/json",...(token?{Authorization:"Bearer "+token}:{}),...(opts.headers||{})}});if(res.status===401){logout(false);throw new Error("Session expirée, reconnectez-vous.")}let data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data.error||"Une erreur est survenue");return data}
+async function persist(){await api("/api/data",{method:"PUT",body:JSON.stringify(db)})}
+async function loadData(){db=await api("/api/data");if(!db.settings)db.settings={hourlyRate:23};if(!Array.isArray(db.records))db.records=[];renderAll()}
+async function login(password){let data=await api("/api/login",{method:"POST",body:JSON.stringify({password})});token=data.token;sessionStorage.setItem("he_token",token);await loadData();$("loginScreen").style.display="none";$("app").style.display="block";$("loginError").textContent=""}
+function logout(callApi=true){if(callApi&&token)api("/api/logout",{method:"POST"}).catch(()=>{});token="";sessionStorage.removeItem("he_token");$("app").style.display="none";$("loginScreen").style.display="grid"}
+function setPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("page-"+name).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("pageTitle").textContent=({dashboard:"Vue d'ensemble",records:"Mes relevés",settings:"Paramètres"})[name];if(name==="records")renderRecords()}
+function fillDateFilters(){
+  let m=$("monthFilter"),y=$("yearFilter");
+  m.innerHTML=MONTHS.map((x,i)=>`<option value="${i}">${x}</option>`).join("");
+  m.value=today.getMonth();
+  let years=[];
+  for(let yr=today.getFullYear()-3;yr<=today.getFullYear()+1;yr++)years.push(yr);
+  y.innerHTML=years.map(v=>`<option>${v}</option>`).join("");
+  y.value=today.getFullYear();
+  $("searchDate").value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}`;
+  
+  // Défaut pour les dates personnalisées
+  $("startDateFilter").value=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-27`;
+  $("endDateFilter").value=localDate(today);
+}
+
+function handlePeriodTypeChange(){
+  let type = $("periodType").value;
+  if(type === "custom"){
+    $("monthYearGroup").style.display = "none";
+    $("customDateGroup").style.display = "inline-flex";
+  } else {
+    $("monthYearGroup").style.display = "inline";
+    $("customDateGroup").style.display = "none";
+  }
+  renderDashboard();
+}
+
+function estimatePay(rows){let rate=num(db.settings.hourlyRate);return rows.reduce((s,r)=>{let h=calc(r), normal=Math.min(h,num(settings.normalHours)), ex=Math.max(0,h-num(settings.normalHours));let mult=r.type==="Dimanche"?num(settings.sundayMultiplier):r.type==="Jour férié"?num(settings.holidayMultiplier):1;return s+(normal*rate*mult)+(ex*rate*mult)+num(r.bonus)},0)}
+function renderDashboard(){
+  let rows=selectedRecords(),total=rows.reduce((s,r)=>s+calc(r),0),ex=rows.reduce((s,r)=>s+extra(r),0),days=rows.filter(r=>!["Absence","Congé"].includes(r.type)).length;
+  $("totalHours").textContent=total.toLocaleString("fr-MA",{maximumFractionDigits:2})+" h";
+  $("extraHours").textContent=ex.toLocaleString("fr-MA",{maximumFractionDigits:2})+" h";
+  $("salary").textContent=money(estimatePay(rows));
+  $("daysCount").textContent=rows.length;
+  $("daysNote").textContent=days+" journée(s) travaillée(s)";
+  $("avgHours").textContent="Moyenne : "+(days? (total/days).toFixed(1):"0")+" h/jour";
+  $("hoursProgressText").textContent=total.toFixed(1)+" h";
+  $("hoursProgress").style.width=Math.min(100,total/176*100)+"%";
+  $("presenceText").textContent=days+" jour(s)";
+  $("presenceProgress").style.width=Math.min(100,days/26*100)+"%";
+
+  let range = getFilterRange();
+  let startD = new Date(range.start), endD = new Date(range.end);
+  let weeks=[0,0,0,0,0,0];
+  rows.forEach(r=>{
+    let d = new Date(r.date);
+    let diffDays = Math.floor((d - startD) / (1000 * 60 * 60 * 24));
+    let wIdx = Math.min(5, Math.max(0, Math.floor(diffDays / 7)));
+    weeks[wIdx] += calc(r);
+  });
+  let max=Math.max(1,...weeks);
+  $("chart").innerHTML=weeks.map((v,i)=>`<div class="bar-wrap"><span class="bar-value">${v?Number(v.toFixed(1))+"h":""}</span><div class="bar" style="height:${Math.max(v?4:1,v/max*130)}px" title="${v.toFixed(2)} h"></div><span class="bar-label">S${i+1}</span></div>`).join("");
+
+  $("recentTable").innerHTML=sorted(rows).slice(0,5).map(r=>`<tr><td>${dateFmt(r.date)}</td><td>${escapeHtml(r.start)} – ${escapeHtml(r.end)}</td><td>${num(r.breakMins)} min</td><td><b>${calc(r).toFixed(2)} h</b></td><td>${extra(r).toFixed(2)} h</td><td><span class="pill ${r.type!=="Normal"?"extra":""}">${escapeHtml(r.type)}</span></td></tr>`).join("")||`<tr><td colspan="6" class="empty">Aucune journée pour cette période. Ajoutez votre premier relevé.</td></tr>`
+}
+
+function renderRecords(){let month=$("searchDate").value,type=$("typeFilter").value;let rows=sorted(db.records).filter(r=>(!month||r.date.startsWith(month))&&(!type||r.type===type));$("recordCount").textContent=rows.length+" entrée(s)";$("recordsTable").innerHTML=rows.map(r=>`<tr><td>${dateFmt(r.date)}</td><td>${escapeHtml(r.start)}</td><td>${escapeHtml(r.end)}</td><td>${num(r.breakMins)} min</td><td><b>${calc(r).toFixed(2)} h</b></td><td>${extra(r).toFixed(2)} h</td><td><span class="pill ${r.type!=="Normal"?"extra":""}">${escapeHtml(r.type)}</span></td><td title="${escapeHtml(r.notes)}">${escapeHtml(r.notes||"—").slice(0,34)}</td><td><button class="secondary small edit" data-id="${r.id}">Modifier</button> <button class="danger small delete" data-id="${r.id}">✕</button></td></tr>`).join("")||`<tr><td colspan="9" class="empty">Aucun relevé correspondant aux filtres.</td></tr>`}
+function renderAll(){renderDashboard();renderRecords();$("hourlyRate").value=db.settings.hourlyRate??23;$("normalHours").value=settings.normalHours;$("sundayMultiplier").value=settings.sundayMultiplier;$("holidayMultiplier").value=settings.holidayMultiplier;$("todayLabel").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(today).toUpperCase()}
+function openModal(r=null){editing=!!r;$("recordForm").reset();$("recordId").value=r?.id||"";$("modalTitle").textContent=r?"Modifier la journée":"Ajouter une journée";$("date").value=r?.date||localDate(today);$("start").value=r?.start||"08:00";$("end").value=r?.end||"16:00";$("breakMins").value=r?.breakMins??0;$("recordType").value=r?.type||"Normal";$("bonus").value=r?.bonus??0;$("notes").value=r?.notes||"";$("modalBackdrop").classList.add("show");preview()}
+function closeModal(){$("modalBackdrop").classList.remove("show")}
+function preview(){let r={start:$("start").value,end:$("end").value,breakMins:$("breakMins").value,type:$("recordType").value};$("calcPreview").textContent=`Durée effective estimée : ${calc(r).toFixed(2)} h · Heures supplémentaires : ${extra(r).toFixed(2)} h (seuil : ${settings.normalHours} h/jour).`}
+async function saveRecord(e){e.preventDefault();let id=$("recordId").value||crypto.randomUUID();let r={id,date:$("date").value,start:$("start").value,end:$("end").value,breakMins:num($("breakMins").value),type:$("recordType").value,bonus:num($("bonus").value),notes:$("notes").value.trim()};if(!r.date||!r.start||!r.end)return;if(r.breakMins<0||r.breakMins>600){showToast("Vérifiez la durée de pause.");return}let idx=db.records.findIndex(x=>x.id===id);if(idx>=0)db.records[idx]=r;else db.records.push(r);try{await persist();closeModal();renderAll();showToast("Relevé enregistré avec succès.");}catch(err){showToast(err.message)}}
+function download(name,content,type){let blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();URL.revokeObjectURL(url)}
+function exportJSON(){download("releve-heures-sauvegarde-"+localDate(today)+".json",JSON.stringify({records:db.records,settings:db.settings,app:"Heures+"},null,2),"application/json")}
+function exportCSV(){let rows=[["Date","Début","Fin","Pause (min)","Heures effectives","Heures supplémentaires","Type","Prime (DH)","Notes"],...sorted(db.records).map(r=>[r.date,r.start,r.end,r.breakMins,calc(r).toFixed(2),extra(r).toFixed(2),r.type,r.bonus,(r.notes||"").replace(/"/g,'""')])];download("releve-heures-"+localDate(today)+".csv","\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\r\n"),"text/csv;charset=utf-8")}async function importJSON(file){try{let data=JSON.parse(await file.text());if(!Array.isArray(data.records))throw new Error("Le fichier ne contient pas de relevés valides.");if(!confirm("Remplacer les relevés actuels par ceux de la sauvegarde ?"))return;db.records=data.records.map(r=>({...r,id:r.id||crypto.randomUUID()}));if(data.settings)db.settings={...db.settings,...data.settings};await persist();renderAll();showToast("Sauvegarde restaurée.");}catch(e){showToast(e.message||"Fichier invalide.")}finally{$("importFile").value=""}}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>setPage(b.dataset.page)));
+$("themeBtn").onclick=()=>{let t=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=t;localStorage.setItem("he_theme",t);$("themeBtn").textContent=t==="dark"?"☀":"☾"};
+let savedTheme=localStorage.getItem("he_theme")||"light";document.documentElement.dataset.theme=savedTheme;$("themeBtn").textContent=savedTheme==="dark"?"☀":"☾";
+
+$("periodType").addEventListener("change",handlePeriodTypeChange);
+$("monthFilter").addEventListener("change",renderDashboard);
+$("yearFilter").addEventListener("change",renderDashboard);
+$("startDateFilter").addEventListener("change",renderDashboard);
+$("endDateFilter").addEventListener("change",renderDashboard);
+$("searchDate").addEventListener("change",renderRecords);
+$("typeFilter").addEventListener("change",renderRecords);
+
+$("addBtn").onclick=$("addBtn2").onclick=()=>openModal();$("quickRecords").onclick=$("allRecords").onclick=()=>setPage("records");$("quickSettings").onclick=()=>setPage("settings");
+$("closeModal").onclick=$("cancelModal").onclick=closeModal;$("modalBackdrop").addEventListener("click",e=>{if(e.target===$("modalBackdrop"))closeModal()});["start","end","breakMins","recordType"].forEach(id=>$(id).addEventListener("input",preview));$("recordForm").addEventListener("submit",saveRecord);
+$("recordsTable").addEventListener("click",async e=>{let b=e.target.closest("button");if(!b)return;let r=db.records.find(x=>x.id===b.dataset.id);if(!r)return;if(b.classList.contains("edit"))openModal(r);if(b.classList.contains("delete")&&confirm("Supprimer le relevé du "+dateFmt(r.date)+" ?")){db.records=db.records.filter(x=>x.id!==r.id);try{await persist();renderAll();showToast("Relevé supprimé.")}catch(err){showToast(err.message)}}});
+$("saveSettings").onclick=async()=>{settings={normalHours:Math.max(1,num($("normalHours").value)),sundayMultiplier:Math.max(1,num($("sundayMultiplier").value)),holidayMultiplier:Math.max(1,num($("holidayMultiplier").value))};db.settings.hourlyRate=Math.max(0,num($("hourlyRate").value));try{await persist();renderAll();showToast("Paramètres enregistrés.")}catch(e){showToast(e.message)}};
+$("exportCsv").onclick=exportCSV;$("exportJson").onclick=exportJSON;$("settingsExport").onclick=exportJSON;$("importBtn").onclick=$("settingsImport").onclick=()=>$("importFile").click();$("importFile").onchange=e=>e.target.files[0]&&importJSON(e.target.files[0]);
+$("clearRecords").onclick=async()=>{if(confirm("Supprimer définitivement TOUS les relevés enregistrés ? Téléchargez une sauvegarde avant de continuer." )&&confirm("Dernière confirmation : cette action est irréversible sans sauvegarde.")){db.records=[];try{await persist();renderAll();showToast("Tous les relevés ont été supprimés.")}catch(e){showToast(e.message)}}};
+$("logoutBtn").onclick=()=>logout();$("loginForm").onsubmit=async e=>{e.preventDefault();$("loginError").textContent="";try{await login($("passwordInput").value);$("passwordInput").value=""}catch(err){$("loginError").textContent=err.message}};
+fillDateFilters();
+(async()=>{let old=sessionStorage.getItem("he_token");if(old){token=old;try{await loadData();$("loginScreen").style.display="none";$("app").style.display="block"}catch{logout(false)}}})();
+</script>
+</body></html>
